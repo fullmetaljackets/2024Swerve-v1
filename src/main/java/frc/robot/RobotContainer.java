@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 
 public class RobotContainer {
@@ -69,6 +70,14 @@ public class RobotContainer {
 
     // reset the field-centric heading on left bumper press
     driveStick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+
+    /* Bindings for drivetrain characterization */
+    /* These bindings require multiple buttons pushed to swap between quastatic and dynamic */
+    /* Back/Start select dynamic/quasistatic, Y/X select forward/reverse direction */
+    driveStick.back().and(driveStick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    driveStick.back().and(driveStick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    driveStick.start().and(driveStick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    driveStick.start().and(driveStick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

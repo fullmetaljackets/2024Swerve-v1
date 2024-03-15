@@ -17,57 +17,58 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 
 public class RobotContainer {
-  private double MaxSpeed = 1; // 6 meters per second desired top speed
+  private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  private final CommandXboxController driveStick = new CommandXboxController(0); // My main driver joystick
+  private final CommandXboxController copilotStick = new CommandXboxController(1); // My copilot joystick
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
-                                                               // driving in open loop
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric driving in open loop
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
+  
   private void configureBindings() {
+
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-                                                                                           // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        drivetrain.applyRequest(() -> drive.withVelocityX(-driveStick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+            .withVelocityY(-driveStick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-driveStick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    joystick.b().whileTrue(drivetrain
-        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    driveStick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    driveStick.b().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-driveStick.getLeftY(), -driveStick.getLeftX()))));
+    driveStick.rightTrigger(0.1).whileTrue(drivetrain.applyRequest(() -> brake)); // Just a test to see if we can use a trigger
 
     // DPAD definitions
-    joystick.povUp().whileTrue(drivetrain.applyRequest(() -> 
+    driveStick.povUp().whileTrue(drivetrain.applyRequest(() -> 
             drive.withVelocityX(0.25 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
             .withVelocityY(0 * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
-    joystick.povDown().whileTrue(drivetrain.applyRequest(() -> 
+    driveStick.povDown().whileTrue(drivetrain.applyRequest(() -> 
             drive.withVelocityX(-0.25 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
             .withVelocityY(0 * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
-    joystick.povLeft().whileTrue(drivetrain.applyRequest(() -> 
+    driveStick.povLeft().whileTrue(drivetrain.applyRequest(() -> 
             drive.withVelocityX(0 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
             .withVelocityY(0.25 * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
-    joystick.povRight().whileTrue(drivetrain.applyRequest(() -> 
+    driveStick.povRight().whileTrue(drivetrain.applyRequest(() -> 
             drive.withVelocityX(0 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
             .withVelocityY(0.25 * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
 
     // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    driveStick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));

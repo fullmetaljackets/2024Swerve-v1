@@ -67,7 +67,7 @@ public class RobotContainer {
     ));
     driveStick.povRight().whileTrue(drivetrain.applyRequest(() -> 
             drive.withVelocityX(0 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(0.25 * MaxSpeed) // Drive left with negative X (left)
+            .withVelocityY(-0.25 * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
 

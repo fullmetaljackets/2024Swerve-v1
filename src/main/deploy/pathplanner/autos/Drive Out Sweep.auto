@@ -2,30 +2,24 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.9973337121815484,
-      "y": 6.980220966091649
+      "x": 0.7102830024869088,
+      "y": 4.371334392386299
     },
-    "rotation": 0
+    "rotation": 119.57783868126128
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "shootSpeaker"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "shoot"
+            "pathName": "Drive Out Feed Sweep"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Feed",
   "choreoAuto": false
 }

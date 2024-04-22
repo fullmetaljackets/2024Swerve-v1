@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -27,6 +28,7 @@ import frc.robot.commands.TriggerOut;
 import frc.robot.commands.groups.ShooterIn;
 import frc.robot.commands.groups.ShooterOut;
 import frc.robot.commands.groups.ShooterOutAmp;
+import frc.robot.commands.groups.ShooterOutAuto;
 import frc.robot.commands.groups.ShooterOutSlow;
 import frc.robot.commands.groups.ShooterOutTrap;
 import frc.robot.generated.TunerConstants;
@@ -188,6 +190,8 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
+        NamedCommands.registerCommand("shootSpeaker", new ShooterOutAuto(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger));
+        
     configureBindings();
   }
 

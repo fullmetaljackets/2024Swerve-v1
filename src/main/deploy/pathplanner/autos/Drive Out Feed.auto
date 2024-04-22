@@ -2,30 +2,24 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.9973337121815484,
-      "y": 6.980220966091649
+      "x": 0.6870928996095279,
+      "y": 4.371334392386299
     },
-    "rotation": 0
+    "rotation": 118.85566121971651
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "shootSpeaker"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "shoot"
+            "pathName": "Drive Out Feed"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Feed",
   "choreoAuto": false
 }

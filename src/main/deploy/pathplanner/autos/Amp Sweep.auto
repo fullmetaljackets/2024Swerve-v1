@@ -2,30 +2,24 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.9973337121815484,
-      "y": 6.980220966091649
+      "x": 0.6986879510482183,
+      "y": 6.701939731563079
     },
-    "rotation": 0
+    "rotation": -120.41108126712531
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "shootSpeaker"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "shoot"
+            "pathName": "Amp Drive Out Sweep"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Amp",
   "choreoAuto": false
 }

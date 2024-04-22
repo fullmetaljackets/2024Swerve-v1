@@ -2,30 +2,24 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.9973337121815484,
-      "y": 6.980220966091649
+      "x": 0.7450681568029801,
+      "y": 6.713534783001769
     },
-    "rotation": 0
+    "rotation": -119.89890183861458
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "shootSpeaker"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "shoot"
+            "pathName": "Amp drive out "
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Amp",
   "choreoAuto": false
 }

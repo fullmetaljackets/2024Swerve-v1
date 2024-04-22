@@ -22,10 +22,20 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ArmToggle;
 import frc.robot.commands.ElevatorRaise;
 import frc.robot.commands.PanToggle;
+import frc.robot.commands.TriggerIn;
+import frc.robot.commands.TriggerOut;
+import frc.robot.commands.groups.ShooterIn;
+import frc.robot.commands.groups.ShooterOut;
+import frc.robot.commands.groups.ShooterOutAmp;
+import frc.robot.commands.groups.ShooterOutSlow;
+import frc.robot.commands.groups.ShooterOutTrap;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.ShooterOne;
 import frc.robot.subsystems.ShooterPan;
+import frc.robot.subsystems.ShooterTrigger;
+import frc.robot.subsystems.ShooterTwo;
 
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
@@ -47,6 +57,9 @@ public class RobotContainer {
   public final Elevator s_Elevator = new Elevator();
   private final Arm s_Arm = new Arm();
   private final ShooterPan s_ShooterPan = new ShooterPan();
+  private final ShooterOne s_ShooterOne = new ShooterOne();
+  private final ShooterTwo s_ShooterTwo = new ShooterTwo();
+  private final ShooterTrigger s_ShooterTrigger = new ShooterTrigger();
  
   public int redMultiplier = 1;   // set to -1 to invert motors to drive for Red side.
   
@@ -68,16 +81,54 @@ public class RobotContainer {
         redMultiplier = 1;
     }
 
-    
+
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-driveStick.getLeftY() * MaxSpeed * redMultiplier) // Drive forward with negative Y (forward)
             .withVelocityY(-driveStick.getLeftX() * MaxSpeed * redMultiplier) // Drive left with negative X (left)
             .withRotationalRate(-driveStick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
+    /********************
+     *  DRIVER Controls *
+     ********************/
     driveStick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    driveStick.b().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-driveStick.getLeftY(), -driveStick.getLeftX()))));
+    driveStick.back().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-driveStick.getLeftY(), -driveStick.getLeftX()))));
     driveStick.rightTrigger(0.1).whileTrue(drivetrain.applyRequest(() -> brake)); // Just a test to see if we can use a trigger
+    // reset the field-centric heading on left bumper press
+    driveStick.leftStick().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+
+    // Shooter in
+    driveStick.leftBumper().whileTrue(new ShooterIn(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // final JoystickButton shooterIn = new JoystickButton(driveStick, XboxController.Button.kLeftBumper.value);
+    // shooterIn.onTrue(new ShooterIn(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // shooterIn.onFalse(new ShooterInStop(s_ShooterOne, s_ShooterTwo));
+
+    // Shoot Trap
+    driveStick.b().whileTrue(new ShooterOutTrap(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // final JoystickButton shooterOutTrap = new JoystickButton(driveStick, XboxController.Button.kB.value);
+    // shooterOutTrap.onTrue(new ShooterOutTrap(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // shooterOutTrap.onFalse(new ShooterOutStop(s_ShooterOne, s_ShooterTwo));
+
+    // Shoot Amp
+    driveStick.rightBumper().whileTrue(new ShooterOutAmp(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // final JoystickButton shooterOutAmp = new JoystickButton(driveStick, XboxController.Button.kRightBumper.value);
+    // shooterOutAmp.onTrue(new ShooterOutAmp(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // shooterOutAmp.onFalse(new ShooterOutStop(s_ShooterOne, s_ShooterTwo));
+
+    //Trigger In
+    driveStick.x().whileTrue(new TriggerIn(-0.25, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // final JoystickButton triggerIn = new JoystickButton(driveStick, XboxController.Button.kX.value);
+    // triggerIn.onTrue(new TriggerIn(-0.25, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // triggerIn.onFalse(new TriggerIn(0, s_ShooterTrigger));
+
+    driveStick.y().whileTrue(new TriggerOut(1, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // final JoystickButton triggerOut = new JoystickButton(driveStick, XboxController.Button.kY.value);
+    // triggerOut.onTrue(new TriggerOut(1, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // triggerOut.onFalse(new TriggerOut(0, s_ShooterTrigger));
+
+    // final JoystickButton xxxx = new JoystickButton(driveStick, XboxController.Axis.kRightTrigger.value);
+    // xxxx.whileTrue(new TriggerIn(-0.25, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
 
     // DPAD definitions
     driveStick.povUp().whileTrue(drivetrain.applyRequest(() -> 
@@ -101,11 +152,11 @@ public class RobotContainer {
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
 
-    // reset the field-centric heading on left bumper press
-    driveStick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
 
-    //Copilot Face Buttons 
+    /*********************
+     *  COPILOT Controls *
+     *********************/
     // Elevator
     copilotStick.b().whileTrue(new ElevatorRaise(1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     copilotStick.a().whileTrue(new ElevatorRaise(-1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
@@ -113,6 +164,13 @@ public class RobotContainer {
     copilotStick.x().toggleOnTrue(new ArmToggle(s_Arm));
     // Pan
     copilotStick.y().toggleOnTrue(new PanToggle(s_ShooterPan));
+    // Shooter
+    //Copilot Bumpers/Triggers
+    copilotStick.rightBumper().whileTrue(new ShooterOut(s_ShooterOne, s_ShooterTwo).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // final JoystickButton shooterOut =new JoystickButton(copilotStick, XboxController.Button.kRightBumper.value);
+    // shooterOut.onTrue(new ShooterOut(s_ShooterOne, s_ShooterTwo).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // shooterOut.onFalse(new ShooterOutStop(s_ShooterOne, s_ShooterTwo));
+    copilotStick.leftBumper().whileTrue(new ShooterOutSlow(s_ShooterOne, s_ShooterTwo));
 
 
     /* Bindings for drivetrain characterization */

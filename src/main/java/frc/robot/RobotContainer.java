@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
@@ -11,11 +13,11 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ArmToggle;
 import frc.robot.commands.ElevatorRaise;
@@ -45,16 +47,30 @@ public class RobotContainer {
   public final Elevator s_Elevator = new Elevator();
   private final Arm s_Arm = new Arm();
   private final ShooterPan s_ShooterPan = new ShooterPan();
-
+ 
+  public int redMultiplier = 1;   // set to -1 to invert motors to drive for Red side.
   
   private Command runAuto = drivetrain.getAutoPath("Straight");
 
   
   private void configureBindings() {
 
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+        if (ally.get() == Alliance.Red) {
+            redMultiplier = -1;
+        }
+        if (ally.get() == Alliance.Blue) {
+            redMultiplier = 1;
+        }
+    }
+    else {
+        redMultiplier = 1;
+    }
+
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-driveStick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-            .withVelocityY(-driveStick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+        drivetrain.applyRequest(() -> drive.withVelocityX(-driveStick.getLeftY() * MaxSpeed * redMultiplier) // Drive forward with negative Y (forward)
+            .withVelocityY(-driveStick.getLeftX() * MaxSpeed * redMultiplier) // Drive left with negative X (left)
             .withRotationalRate(-driveStick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
@@ -64,23 +80,23 @@ public class RobotContainer {
 
     // DPAD definitions
     driveStick.povUp().whileTrue(drivetrain.applyRequest(() -> 
-            drive.withVelocityX(0.25 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(0 * MaxSpeed) // Drive left with negative X (left)
+            drive.withVelocityX(0.25 * MaxSpeed * redMultiplier) // Drive forward 25% of MaxSpeed (forward)
+            .withVelocityY(0 * MaxSpeed * redMultiplier) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
     driveStick.povDown().whileTrue(drivetrain.applyRequest(() -> 
-            drive.withVelocityX(-0.25 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(0 * MaxSpeed) // Drive left with negative X (left)
+            drive.withVelocityX(-0.25 * MaxSpeed * redMultiplier) // Drive forward 25% of MaxSpeed (forward)
+            .withVelocityY(0 * MaxSpeed * redMultiplier) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
     driveStick.povLeft().whileTrue(drivetrain.applyRequest(() -> 
-            drive.withVelocityX(0 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(0.25 * MaxSpeed) // Drive left with negative X (left)
+            drive.withVelocityX(0 * MaxSpeed * redMultiplier) // Drive forward 25% of MaxSpeed (forward)
+            .withVelocityY(0.25 * MaxSpeed * redMultiplier) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
     driveStick.povRight().whileTrue(drivetrain.applyRequest(() -> 
-            drive.withVelocityX(0 * MaxSpeed) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(-0.25 * MaxSpeed) // Drive left with negative X (left)
+            drive.withVelocityX(0 * MaxSpeed * redMultiplier) // Drive forward 25% of MaxSpeed (forward)
+            .withVelocityY(-0.25 * MaxSpeed * redMultiplier) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
 

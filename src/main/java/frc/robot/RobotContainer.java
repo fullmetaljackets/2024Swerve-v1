@@ -5,9 +5,8 @@
 package frc.robot;
 
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,14 +14,16 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.ElevatorLower;
+import frc.robot.commands.ArmToggle;
 import frc.robot.commands.ElevatorRaise;
+import frc.robot.commands.PanToggle;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.ShooterPan;
 
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
@@ -42,6 +43,8 @@ public class RobotContainer {
   /* Subsystems */
   private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public final Elevator s_Elevator = new Elevator();
+  private final Arm s_Arm = new Arm();
+  private final ShooterPan s_ShooterPan = new ShooterPan();
 
   
   private Command runAuto = drivetrain.getAutoPath("Straight");
@@ -89,7 +92,10 @@ public class RobotContainer {
     // Elevator
     copilotStick.b().whileTrue(new ElevatorRaise(1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     copilotStick.a().whileTrue(new ElevatorRaise(-1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
+    // Arm
+    copilotStick.x().toggleOnTrue(new ArmToggle(s_Arm));
+    // Pan
+    copilotStick.y().toggleOnTrue(new PanToggle(s_ShooterPan));
 
 
     /* Bindings for drivetrain characterization */

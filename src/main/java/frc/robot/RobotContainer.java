@@ -69,8 +69,6 @@ public class RobotContainer {
 
   
 
-  
-
   public RobotContainer() {
         NamedCommands.registerCommand("shootSpeaker", new ShooterOutAuto(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger));
 
@@ -94,9 +92,6 @@ public class RobotContainer {
             .withRotationalRate(-driveStick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
-    /********************
-     *  DRIVER Controls *
-     ********************/
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
@@ -109,7 +104,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-            driveStick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    /********************
+     *  DRIVER Controls *
+     ********************/
+    //driveStick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     driveStick.back().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-driveStick.getLeftY(), -driveStick.getLeftX()))));
     driveStick.rightTrigger(0.1).whileTrue(drivetrain.applyRequest(() -> brake)); // Just a test to see if we can use a trigger
     // reset the field-centric heading on left bumper press
@@ -117,36 +115,14 @@ public class RobotContainer {
 
     // Shooter in
     driveStick.leftBumper().whileTrue(new ShooterIn(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // final JoystickButton shooterIn = new JoystickButton(driveStick, XboxController.Button.kLeftBumper.value);
-    // shooterIn.onTrue(new ShooterIn(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // shooterIn.onFalse(new ShooterInStop(s_ShooterOne, s_ShooterTwo));
-
     // Shoot Trap
     driveStick.b().whileTrue(new ShooterOutTrap(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // final JoystickButton shooterOutTrap = new JoystickButton(driveStick, XboxController.Button.kB.value);
-    // shooterOutTrap.onTrue(new ShooterOutTrap(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // shooterOutTrap.onFalse(new ShooterOutStop(s_ShooterOne, s_ShooterTwo));
-
     // Shoot Amp
     driveStick.rightBumper().whileTrue(new ShooterOutAmp(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // final JoystickButton shooterOutAmp = new JoystickButton(driveStick, XboxController.Button.kRightBumper.value);
-    // shooterOutAmp.onTrue(new ShooterOutAmp(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // shooterOutAmp.onFalse(new ShooterOutStop(s_ShooterOne, s_ShooterTwo));
-
-    //Trigger In
+    // Trigger In
     driveStick.x().whileTrue(new TriggerIn(-0.25, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // final JoystickButton triggerIn = new JoystickButton(driveStick, XboxController.Button.kX.value);
-    // triggerIn.onTrue(new TriggerIn(-0.25, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // triggerIn.onFalse(new TriggerIn(0, s_ShooterTrigger));
-
+    // Trigger Out
     driveStick.y().whileTrue(new TriggerOut(1, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // final JoystickButton triggerOut = new JoystickButton(driveStick, XboxController.Button.kY.value);
-    // triggerOut.onTrue(new TriggerOut(1, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // triggerOut.onFalse(new TriggerOut(0, s_ShooterTrigger));
-
-    // final JoystickButton xxxx = new JoystickButton(driveStick, XboxController.Axis.kRightTrigger.value);
-    // xxxx.whileTrue(new TriggerIn(-0.25, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
 
     // DPAD definitions
     driveStick.povUp().whileTrue(drivetrain.applyRequest(() -> 

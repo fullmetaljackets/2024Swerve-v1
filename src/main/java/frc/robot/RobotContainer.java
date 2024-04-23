@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.Optional;
+import java.util.function.IntSupplier;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -64,6 +65,11 @@ public class RobotContainer {
   private final ShooterTrigger s_ShooterTrigger = new ShooterTrigger();
  
   public int redMultiplier = 1;   // set to -1 to invert motors to drive for Red side.
+  public IntSupplier allianceOriented = () -> {
+        if (!DriverStation.getAlliance().isPresent()) { return 1; }
+        return DriverStation.getAlliance().get() == Alliance.Red ? -1 : 1;
+    };
+
   
   private Command runAuto = drivetrain.getAutoPath("Straight");
 
@@ -87,8 +93,8 @@ public class RobotContainer {
 
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-driveStick.getLeftY() * MaxSpeed * redMultiplier) // Drive forward with negative Y (forward)
-            .withVelocityY(-driveStick.getLeftX() * MaxSpeed * redMultiplier) // Drive left with negative X (left)
+        drivetrain.applyRequest(() -> drive.withVelocityX(-driveStick.getLeftY() * MaxSpeed * allianceOriented.getAsInt()) // Drive forward with negative Y (forward)
+            .withVelocityY(-driveStick.getLeftX() * MaxSpeed * allianceOriented.getAsInt()) // Drive left with negative X (left)
             .withRotationalRate(-driveStick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
@@ -126,26 +132,25 @@ public class RobotContainer {
 
     // DPAD definitions
     driveStick.povUp().whileTrue(drivetrain.applyRequest(() -> 
-            drive.withVelocityX(0.25 * MaxSpeed * redMultiplier) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(0 * MaxSpeed * redMultiplier) // Drive left with negative X (left)
+            drive.withVelocityX(0.25 * MaxSpeed * allianceOriented.getAsInt()) // Drive forward 25% of MaxSpeed (forward)
+            .withVelocityY(0 * MaxSpeed * allianceOriented.getAsInt()) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
     driveStick.povDown().whileTrue(drivetrain.applyRequest(() -> 
-            drive.withVelocityX(-0.25 * MaxSpeed * redMultiplier) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(0 * MaxSpeed * redMultiplier) // Drive left with negative X (left)
+            drive.withVelocityX(-0.25 * MaxSpeed * allianceOriented.getAsInt()) // Drive forward 25% of MaxSpeed (forward)
+            .withVelocityY(0 * MaxSpeed * allianceOriented.getAsInt()) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
     driveStick.povLeft().whileTrue(drivetrain.applyRequest(() -> 
-            drive.withVelocityX(0 * MaxSpeed * redMultiplier) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(0.25 * MaxSpeed * redMultiplier) // Drive left with negative X (left)
+            drive.withVelocityX(0 * MaxSpeed * allianceOriented.getAsInt()) // Drive forward 25% of MaxSpeed (forward)
+            .withVelocityY(0.25 * MaxSpeed * allianceOriented.getAsInt()) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
     driveStick.povRight().whileTrue(drivetrain.applyRequest(() -> 
-            drive.withVelocityX(0 * MaxSpeed * redMultiplier) // Drive forward 25% of MaxSpeed (forward)
-            .withVelocityY(-0.25 * MaxSpeed * redMultiplier) // Drive left with negative X (left)
+            drive.withVelocityX(0 * MaxSpeed * allianceOriented.getAsInt()) // Drive forward 25% of MaxSpeed (forward)
+            .withVelocityY(-0.25 * MaxSpeed * allianceOriented.getAsInt()) // Drive left with negative X (left)
             .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
     ));
-
 
 
     /*********************
@@ -176,6 +181,8 @@ public class RobotContainer {
     driveStick.start().and(driveStick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
   }
+
+
   public Command getAutonomousCommand() {
     //return new PathPlannerAuto("Straight");
     // return Commands.print("No autonomous command configured");

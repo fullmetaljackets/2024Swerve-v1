@@ -68,7 +68,11 @@ public class RobotContainer {
   private Command runAuto = drivetrain.getAutoPath("Straight");
 
   
-  private void configureBindings() {
+
+  
+
+  public RobotContainer() {
+        NamedCommands.registerCommand("shootSpeaker", new ShooterOutAuto(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger));
 
     Optional<Alliance> ally = DriverStation.getAlliance();
     if (ally.isPresent()) {
@@ -93,7 +97,19 @@ public class RobotContainer {
     /********************
      *  DRIVER Controls *
      ********************/
-    driveStick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+
+    if (Utils.isSimulation()) {
+      drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+    }
+    drivetrain.registerTelemetry(logger::telemeterize);
+
+        
+    configureBindings();
+    
+  }
+
+  private void configureBindings() {
+            driveStick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     driveStick.back().whileTrue(drivetrain.applyRequest(() -> point.withModuleDirection(new Rotation2d(-driveStick.getLeftY(), -driveStick.getLeftX()))));
     driveStick.rightTrigger(0.1).whileTrue(drivetrain.applyRequest(() -> brake)); // Just a test to see if we can use a trigger
     // reset the field-centric heading on left bumper press
@@ -183,18 +199,7 @@ public class RobotContainer {
     driveStick.start().and(driveStick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
     driveStick.start().and(driveStick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-    if (Utils.isSimulation()) {
-      drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
-    }
-    drivetrain.registerTelemetry(logger::telemeterize);
   }
-
-  public RobotContainer() {
-        NamedCommands.registerCommand("shootSpeaker", new ShooterOutAuto(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger));
-        
-    configureBindings();
-  }
-
   public Command getAutonomousCommand() {
     //return new PathPlannerAuto("Straight");
     // return Commands.print("No autonomous command configured");

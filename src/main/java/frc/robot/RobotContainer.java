@@ -64,7 +64,7 @@ public class RobotContainer {
   private final ShooterTwo s_ShooterTwo = new ShooterTwo();
   private final ShooterTrigger s_ShooterTrigger = new ShooterTrigger();
  
-  public int redMultiplier = 1;   // set to -1 to invert motors to drive for Red side.
+  // set to -1 to invert motors to drive for Red side.
   public IntSupplier allianceOriented = () -> {
         if (!DriverStation.getAlliance().isPresent()) { return 1; }
         return DriverStation.getAlliance().get() == Alliance.Red ? -1 : 1;
@@ -78,20 +78,6 @@ public class RobotContainer {
   public RobotContainer() {
         NamedCommands.registerCommand("shootSpeaker", new ShooterOutAuto(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger));
 
-    Optional<Alliance> ally = DriverStation.getAlliance();
-    if (ally.isPresent()) {
-        if (ally.get() == Alliance.Red) {
-            redMultiplier = -1;
-        }
-        if (ally.get() == Alliance.Blue) {
-            redMultiplier = 1;
-        }
-    }
-    else {
-        redMultiplier = 1;
-    }
-
-
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-driveStick.getLeftY() * MaxSpeed * allianceOriented.getAsInt()) // Drive forward with negative Y (forward)
             .withVelocityY(-driveStick.getLeftX() * MaxSpeed * allianceOriented.getAsInt()) // Drive left with negative X (left)
@@ -102,9 +88,9 @@ public class RobotContainer {
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
+    
     drivetrain.registerTelemetry(logger::telemeterize);
-
-        
+    
     configureBindings();
     
   }

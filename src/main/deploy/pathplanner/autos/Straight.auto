@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.9973337121815484,
-      "y": 6.980220966091649
+      "x": 0.7218780539255992,
+      "y": 4.440904701018442
     },
-    "rotation": 0
+    "rotation": 120.69972255081443
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,25 @@
         {
           "type": "named",
           "data": {
-            "name": "shootSpeaker"
+            "name": "shoooterChargeUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot"
+            "pathName": "New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
           }
         }
       ]

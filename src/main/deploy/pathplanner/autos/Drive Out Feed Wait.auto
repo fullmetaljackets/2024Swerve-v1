@@ -5,22 +5,28 @@
       "x": 0.6754978481708375,
       "y": 4.371334392386299
     },
-    "rotation": 118.88658176691067
+    "rotation": 119.57783868126128
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 8.0
+            "name": "shoooterChargeUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Out Feed"
+            "pathName": "Drive Out Feed Wait"
           }
         }
       ]

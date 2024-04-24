@@ -4,19 +4,22 @@
 
 package frc.robot;
 
-import java.util.Optional;
 import java.util.function.IntSupplier;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
-import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -26,6 +29,7 @@ import frc.robot.commands.ElevatorRaise;
 import frc.robot.commands.PanToggle;
 import frc.robot.commands.TriggerIn;
 import frc.robot.commands.TriggerOut;
+import frc.robot.commands.ZeroPigeon;
 import frc.robot.commands.groups.ShooterIn;
 import frc.robot.commands.groups.ShooterOut;
 import frc.robot.commands.groups.ShooterOutAmp;
@@ -63,6 +67,8 @@ public class RobotContainer {
   private final ShooterOne s_ShooterOne = new ShooterOne();
   private final ShooterTwo s_ShooterTwo = new ShooterTwo();
   private final ShooterTrigger s_ShooterTrigger = new ShooterTrigger();
+  private final SendableChooser<Command> autoChooser;
+
  
   // set to -1 to invert motors to drive for Red side.
   public IntSupplier allianceOriented = () -> {
@@ -71,19 +77,21 @@ public class RobotContainer {
     };
 
   
-  private Command runAuto = drivetrain.getAutoPath("Straight");
+  // private Command runAuto = drivetrain.getAutoPath("Straight");
 
   
 
   public RobotContainer() {
-        NamedCommands.registerCommand("shootSpeaker", new ShooterOutAuto(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger));
+    NamedCommands.registerCommand("shoooterChargeUp", new ShooterOut(s_ShooterOne, s_ShooterTwo).withTimeout(.5));
+    NamedCommands.registerCommand("Shooter", new ShooterOutAuto(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withTimeout(.5));
+    NamedCommands.registerCommand("zeroGyro", new ZeroPigeon(drivetrain).withTimeout(.5));
 
+    drivetrain.configNeutralMode(NeutralModeValue.Coast);
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-driveStick.getLeftY() * MaxSpeed * allianceOriented.getAsInt()) // Drive forward with negative Y (forward)
             .withVelocityY(-driveStick.getLeftX() * MaxSpeed * allianceOriented.getAsInt()) // Drive left with negative X (left)
             .withRotationalRate(-driveStick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
-
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
@@ -92,7 +100,11 @@ public class RobotContainer {
     drivetrain.registerTelemetry(logger::telemeterize);
     
     configureBindings();
-    
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+        
+
   }
 
   private void configureBindings() {
@@ -172,6 +184,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     //return new PathPlannerAuto("Straight");
     // return Commands.print("No autonomous command configured");
-    return runAuto;
+    // PathPlannerPath  path = PathPlannerPath.fromPathFile("Test path 1");
+
+    // return new PathPlannerAuto("Straight");
+
+    // return runAuto;
+    return autoChooser.getSelected();
+    
   }
 }

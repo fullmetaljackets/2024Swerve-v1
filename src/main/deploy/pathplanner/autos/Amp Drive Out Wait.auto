@@ -28,6 +28,12 @@
           "data": {
             "pathName": "Amp Drive Out Wait"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
         }
       ]
     }

@@ -28,6 +28,12 @@
           "data": {
             "pathName": "Drive Out Feed Wait"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
         }
       ]
     }

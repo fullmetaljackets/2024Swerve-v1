@@ -12,9 +12,27 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "shoooterChargeUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Middle Drive Out Amp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
           }
         }
       ]

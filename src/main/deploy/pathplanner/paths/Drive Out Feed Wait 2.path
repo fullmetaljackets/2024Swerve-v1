@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6870928996095279,
-        "y": 4.359739340947609
+        "x": 1.36,
+        "y": 1.18
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1161098028410745,
-        "y": 3.5017055344845156
+        "x": 2.3600000000000003,
+        "y": 1.1799999999999997
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "feed wait end"
     },
     {
       "anchor": {
-        "x": 2.008928763620239,
-        "y": 1.7276626643648763
+        "x": 7.505299374235111,
+        "y": 0.8769021174405992
       },
       "prevControl": {
-        "x": 1.665978438499108,
-        "y": 1.9355113462564704
-      },
-      "nextControl": {
-        "x": 2.3915654610970236,
-        "y": 1.495761635591068
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.3542474768565365,
-        "y": 0.6957030863214274
-      },
-      "prevControl": {
-        "x": 6.3542474768565365,
-        "y": 0.6957030863214274
+        "x": 6.505299374235111,
+        "y": 0.8769021174405992
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +45,7 @@
   "reversed": false,
   "folder": "Feed",
   "previewStartingState": {
-    "rotation": 119.74488129694225,
+    "rotation": 102.20515931119496,
     "velocity": 0
   },
   "useDefaultConstraints": true

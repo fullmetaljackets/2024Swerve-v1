@@ -8,40 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1161098028410745,
-        "y": 3.5017055344845156
+        "x": 0.8842087740672655,
+        "y": 3.316184711465468
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.008928763620239,
-        "y": 1.7276626643648763
+        "x": 1.36,
+        "y": 1.18
       },
       "prevControl": {
-        "x": 1.665978438499108,
-        "y": 1.9355113462564704
-      },
-      "nextControl": {
-        "x": 2.3915654610970236,
-        "y": 1.495761635591068
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.3542474768565365,
-        "y": 0.6957030863214274
-      },
-      "prevControl": {
-        "x": 6.3542474768565365,
-        "y": 0.6957030863214274
+        "x": 1.1617521416861016,
+        "y": 1.9497078994158
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "feed wait end"
     }
   ],
   "rotationTargets": [],
@@ -55,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 121.50693017384786,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Feed",
   "previewStartingState": {
-    "rotation": 119.74488129694225,
+    "rotation": 119.29136217098429,
     "velocity": 0
   },
   "useDefaultConstraints": true

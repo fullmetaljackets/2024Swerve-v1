@@ -26,7 +26,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp Drive Out Wait"
+            "pathName": "Amp Drive Out Wait 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 9.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Drive Out Wait 2"
           }
         },
         {

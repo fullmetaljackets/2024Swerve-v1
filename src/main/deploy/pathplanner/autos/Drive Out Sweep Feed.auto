@@ -2,15 +2,21 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7102830024869088,
-      "y": 4.371334392386299
+      "x": 0.8494236197511942,
+      "y": 4.440904701018442
     },
-    "rotation": 119.57783868126128
+    "rotation": 130.73210669970914
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        },
         {
           "type": "named",
           "data": {

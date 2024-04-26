@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.394391037369645,
-      "y": 5.530839536255343
+      "x": 1.3827959859309549,
+      "y": 5.542434587694034
     },
     "rotation": -179.1449026037334
   },
@@ -11,6 +11,12 @@
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -26,7 +32,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Sweep"
+            "pathName": "Middle Sweep 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Sweep 2"
           }
         },
         {

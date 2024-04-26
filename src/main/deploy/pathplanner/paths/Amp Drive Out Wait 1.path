@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7352951848760846,
-        "y": 6.714031713777714
+        "x": 0.84,
+        "y": 6.63
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9305889798220273,
-        "y": 7.1657417891106965
+        "x": 1.035286578301105,
+        "y": 7.081713195332131
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Amp Wait 1"
     },
     {
       "anchor": {
-        "x": 1.2,
-        "y": 7.6
+        "x": 1.208870214350598,
+        "y": 7.45
       },
       "prevControl": {
-        "x": 1.0311496986630337,
-        "y": 7.369709284873116
+        "x": 1.0400199130136318,
+        "y": 7.219709284873116
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.1883697409701,
+    "rotation": -112.10944834375171,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Amp",
   "previewStartingState": {
-    "rotation": -119.24882633654695,
+    "rotation": -131.05481377096245,
     "velocity": 0
   },
   "useDefaultConstraints": true

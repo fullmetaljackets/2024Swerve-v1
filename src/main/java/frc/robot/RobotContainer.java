@@ -46,7 +46,7 @@ import frc.robot.subsystems.ShooterTwo;
 
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // 6 meters per second desired top speed
-  private double MaxAngularRate = 1.25 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  private double MaxAngularRate = 1.20 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController driveStick = new CommandXboxController(0); // My main driver joystick
@@ -84,7 +84,7 @@ public class RobotContainer {
   public RobotContainer() {
     NamedCommands.registerCommand("shoooterChargeUp", new ShooterOut(s_ShooterOne, s_ShooterTwo).withTimeout(.5));
     NamedCommands.registerCommand("Shooter", new ShooterOutAuto(s_ShooterOne, s_ShooterTwo, s_ShooterTrigger).withTimeout(.5));
-    NamedCommands.registerCommand("zeroGyro", new ZeroPigeon(drivetrain).withTimeout(.5));
+    NamedCommands.registerCommand("zeroGyro", new ZeroPigeon(drivetrain).withTimeout(.1));
 
     drivetrain.configNeutralMode(NeutralModeValue.Coast);
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically

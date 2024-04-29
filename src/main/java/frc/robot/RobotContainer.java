@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ArmToggle;
+import frc.robot.commands.ElevatorLower;
 import frc.robot.commands.ElevatorRaise;
 import frc.robot.commands.PanToggle;
 import frc.robot.commands.TriggerIn;
@@ -163,11 +164,16 @@ public class RobotContainer {
     copilotStick.y().toggleOnTrue(new PanToggle(s_ShooterPan));
     // Shooter
     //Copilot Bumpers/Triggers
-    copilotStick.rightBumper().whileTrue(new ShooterOut(s_ShooterOne, s_ShooterTwo).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    copilotStick.leftTrigger().whileTrue(new ShooterOut(s_ShooterOne, s_ShooterTwo).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    copilotStick.rightTrigger().whileTrue(new TriggerIn(-0.1, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
     // final JoystickButton shooterOut =new JoystickButton(copilotStick, XboxController.Button.kRightBumper.value);
     // shooterOut.onTrue(new ShooterOut(s_ShooterOne, s_ShooterTwo).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     // shooterOut.onFalse(new ShooterOutStop(s_ShooterOne, s_ShooterTwo));
     copilotStick.leftBumper().whileTrue(new ShooterOutSlow(s_ShooterOne, s_ShooterTwo));
+
+    copilotStick.povUp().whileTrue(new ElevatorRaise(1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    copilotStick.povDown().whileTrue(new ElevatorLower(-1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
 
     /* Bindings for drivetrain characterization */

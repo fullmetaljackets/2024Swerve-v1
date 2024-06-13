@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.8378285683125036,
+      "y": 4.440904701018442
+    },
+    "rotation": 129.4724598483438
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoooterChargeUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Drive Out Feed Wait 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Drive Out Feed Wait 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Feed",
+  "choreoAuto": false
+}

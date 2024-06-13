@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.8030434139964323,
+      "y": 6.655559525808318
+    },
+    "rotation": -134.99999999999994
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoooterChargeUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Drive Out Sweep"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Amp",
+  "choreoAuto": false
+}

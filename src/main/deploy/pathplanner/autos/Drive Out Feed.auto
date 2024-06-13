@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.8262335168738132,
+      "y": 4.41771459814106
+    },
+    "rotation": 129.47245984834385
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoooterChargeUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Drive Out Feed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Feed",
+  "choreoAuto": false
+}

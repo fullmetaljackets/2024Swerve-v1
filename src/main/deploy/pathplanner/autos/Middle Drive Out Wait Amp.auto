@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4059860888083358,
+      "y": 5.530839536255343
+    },
+    "rotation": 179.51445416999184
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "shoooterChargeUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Drive Out Amp Wait 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 8.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Drive Out Amp Wait 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "zeroGyro"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Middle",
+  "choreoAuto": false
+}

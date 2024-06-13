@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.archive;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.ShooterPan;
@@ -6,10 +6,10 @@ import frc.robot.subsystems.ShooterPan;
 /**
  *
  */
-public class AimAmp extends InstantCommand {
+public class AimSpeaker extends InstantCommand {
     private final ShooterPan m_shooterTrigger;
 
-    public AimAmp(ShooterPan subsystem) {
+    public AimSpeaker(ShooterPan subsystem) {
         m_shooterTrigger = subsystem;
         addRequirements(m_shooterTrigger);
     }
@@ -17,13 +17,11 @@ public class AimAmp extends InstantCommand {
     // Called once when this command runs
     @Override
     public void initialize() {
-        m_shooterTrigger.panDown();
+        m_shooterTrigger.panUp();
     }
 
     @Override
     public boolean runsWhenDisabled() {
         return false;
     }
-
-    
 }

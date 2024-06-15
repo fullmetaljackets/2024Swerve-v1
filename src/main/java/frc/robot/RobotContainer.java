@@ -169,7 +169,7 @@ public class RobotContainer {
 
     // final JoystickButton shooterOut =new JoystickButton(copilotStick, XboxController.Button.kRightBumper.value);
     // shooterOut.onTrue(new ShooterOut(s_ShooterOne, s_ShooterTwo).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // shooterOut.onFalse(new ShooterOutStop(s_ShooterOne, s_ShooterTwo));
+    // shooterOut.onFalse(new ShooterOutStop(s_S hooterOne, s_ShooterTwo));
     copilotStick.leftBumper().whileTrue(new ShooterOutSlow(s_ShooterOne, s_ShooterTwo));
 
     copilotStick.povUp().whileTrue(new ElevatorRaise(1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));

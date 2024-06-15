@@ -6,12 +6,12 @@ package frc.robot.commands.groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.AimAmp;
-import frc.robot.commands.ArmRetract;
 import frc.robot.commands.Shooter1Out;
 import frc.robot.commands.Shooter2Out;
-import frc.robot.commands.ShooterClose;
 import frc.robot.commands.TriggerOut;
+import frc.robot.commands.archive.AimAmp;
+import frc.robot.commands.archive.ArmRetract;
+import frc.robot.commands.archive.ShooterClose;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.ShooterJaws;
 import frc.robot.subsystems.ShooterOne;

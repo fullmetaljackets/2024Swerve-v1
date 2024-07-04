@@ -15,6 +15,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -33,6 +34,7 @@ public class Elevator extends SubsystemBase{
     private CANSparkMax elevatorMotor;
     private DigitalInput topLimitSwitch = new DigitalInput(0);
     private DigitalInput bottomLimitSwitch = new DigitalInput(1);
+    final MotionMagicVoltage m_mmReq = new MotionMagicVoltage(0);
 
     // FEP (Find Elevator Position)
     private SparkPIDController m_pidController;
@@ -171,5 +173,6 @@ public class Elevator extends SubsystemBase{
 
         //DriverStation.reportError("******** elevatorMotor **************", false);
     }
+
 }
 

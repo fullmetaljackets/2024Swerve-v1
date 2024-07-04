@@ -30,6 +30,7 @@ import frc.robot.commands.ElevatorRaise;
 import frc.robot.commands.PanToggle;
 import frc.robot.commands.TriggerIn;
 import frc.robot.commands.TriggerOut;
+import frc.robot.commands.TriggerToSetpoint;
 import frc.robot.commands.ZeroPigeon;
 import frc.robot.commands.groups.ShooterIn;
 import frc.robot.commands.groups.ShooterOut;
@@ -174,6 +175,11 @@ public class RobotContainer {
 
     copilotStick.povUp().whileTrue(new ElevatorRaise(1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     copilotStick.povDown().whileTrue(new ElevatorLower(-1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+    copilotStick.rightBumper().onTrue(new TriggerToSetpoint(0, s_ShooterTrigger));
+    copilotStick.povRight().onTrue(new TriggerToSetpoint(1, s_ShooterTrigger));
+    copilotStick.povLeft().onTrue(new TriggerToSetpoint(5, s_ShooterTrigger));
+
 
 
     /* Bindings for drivetrain characterization */

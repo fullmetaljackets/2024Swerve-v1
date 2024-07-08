@@ -178,7 +178,7 @@ public class RobotContainer {
 
     copilotStick.rightBumper().onTrue(new TriggerToSetpoint(0, s_ShooterTrigger));
     copilotStick.povRight().onTrue(new TriggerToSetpoint(1, s_ShooterTrigger));
-    copilotStick.povLeft().onTrue(new TriggerToSetpoint(5, s_ShooterTrigger));
+    copilotStick.povLeft().onTrue(new TriggerToSetpoint(20, s_ShooterTrigger));
 
 
 

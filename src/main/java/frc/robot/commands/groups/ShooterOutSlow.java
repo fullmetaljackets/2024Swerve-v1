@@ -12,8 +12,8 @@ public class ShooterOutSlow extends ParallelCommandGroup {
 
         addCommands(
             //shooter motor 1&2 out
-            // new Shooter1Out(-.80, s_ShooterOne)
-            new Shooter2Out(-.80, s_ShooterTwo)
+            new Shooter1Out(-.80, s_ShooterOne)
+            // new Shooter2Out(-.80, s_ShooterTwo)
         );
     }
 }

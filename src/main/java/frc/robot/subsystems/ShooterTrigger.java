@@ -11,6 +11,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -48,7 +49,7 @@ public class ShooterTrigger extends SubsystemBase{
         
         /* Configure Motion Magic */
         MotionMagicConfigs mm = cfg.MotionMagic;
-        mm.MotionMagicCruiseVelocity = 1; // 5 (mechanism) rotations per second cruise
+        mm.MotionMagicCruiseVelocity = 3; // 5 (mechanism) rotations per second cruise
         mm.MotionMagicAcceleration = 1; // Take approximately 0.5 seconds to reach max vel
         // Take approximately 0.1 seconds to reach max accel 
         mm.MotionMagicJerk = 100;
@@ -57,7 +58,7 @@ public class ShooterTrigger extends SubsystemBase{
         slot0.kS = 0.25; // Add 0.25 V output to overcome static friction
         slot0.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
         slot0.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-        slot0.kP = 1; // A position error of 0.2 rotations results in 12 V output
+        slot0.kP = 60; // A position error of 0.2 rotations results in 12 V output
         slot0.kI = 0; // No output for integrated error
         slot0.kD = 0.5; // A velocity error of 1 rps results in 0.5 V output
         
@@ -82,11 +83,14 @@ public class ShooterTrigger extends SubsystemBase{
     public void periodic() {
         if (m_printCount++ > 10) {
             m_printCount = 0;
-            System.out.println("Pos: " + TriggerMotor.getPosition());
-            System.out.println("Vel: " + TriggerMotor.getVelocity());
-            System.out.println();
+            // System.out.println("Pos: " + TriggerMotor.getPosition());
+            // System.out.println("Vel: " + TriggerMotor.getVelocity());
+            // System.out.println();
+            SmartDashboard.putNumber("position", TriggerMotor.getPosition().getValue());
+            SmartDashboard.putNumber("Velocity", TriggerMotor.getVelocity().getValue());
           }
         //   m_mechanisms.update(TriggerMotor.getPosition(), TriggerMotor.getVelocity());
+        
           }
 
     @Override

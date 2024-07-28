@@ -31,4 +31,15 @@ public class ShooterIn extends ParallelCommandGroup {
             new TriggerIn(-.2, s_ShooterTrigger)
         );
     }
+
+
+    public ShooterIn(ShooterOne s_ShooterOne, double speedOne, ShooterTwo s_ShooterTwo, double speedTwo, ShooterTrigger s_ShooterTrigger, double triggerSpeed){
+
+        addCommands(
+            //shooter motor 1&2 out
+            new Shooter1In(speedOne, s_ShooterOne),
+            new Shooter2In(speedTwo, s_ShooterTwo),
+            new TriggerIn(triggerSpeed, s_ShooterTrigger)
+        );
+    }
 }

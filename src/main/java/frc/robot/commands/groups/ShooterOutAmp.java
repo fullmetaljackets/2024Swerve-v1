@@ -31,4 +31,15 @@ public class ShooterOutAmp extends ParallelCommandGroup {
             new TriggerOut(0.9, s_Trigger)
         );
     }
+
+    public ShooterOutAmp(ShooterOne s_ShooterOne, double speedOne, ShooterTwo s_ShooterTwo, double speedTwo, ShooterTrigger s_Trigger, double triggerSpeed){
+
+        addCommands(
+            //shooter motor 1&2 out
+            new Shooter1Out(speedOne, s_ShooterOne),
+            new Shooter2Out(speedTwo, s_ShooterTwo),
+            new TriggerOut(triggerSpeed, s_Trigger)
+        );
+    }
+
 }

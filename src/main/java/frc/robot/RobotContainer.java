@@ -160,18 +160,18 @@ public class RobotContainer {
     copilotStick.b().whileTrue(new ElevatorRaise(1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     copilotStick.a().whileTrue(new ElevatorRaise(-1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     // Arm
-    copilotStick.x().toggleOnTrue(new ArmToggle(s_Arm));
+    copilotStick.leftTrigger().toggleOnTrue(new ArmToggle(s_Arm));
     // Pan
-    copilotStick.y().toggleOnTrue(new PanToggle(s_ShooterPan));
+    copilotStick.rightTrigger().toggleOnTrue(new PanToggle(s_ShooterPan));
     // Shooter
     //Copilot Bumpers/Triggers
-    copilotStick.leftTrigger().whileTrue(new ShooterOut(s_ShooterOne, -.80, s_ShooterTwo, -.75).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    copilotStick.rightTrigger().whileTrue(new TriggerIn(-0.1, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    copilotStick.y().whileTrue(new ShooterOut(s_ShooterOne, -.80, s_ShooterTwo, -.75).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    copilotStick.rightBumper().whileTrue(new TriggerIn(-0.1, s_ShooterTrigger).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     // final JoystickButton shooterOut =new JoystickButton(copilotStick, XboxController.Button.kRightBumper.value);
     // shooterOut.onTrue(new ShooterOut(s_ShooterOne, s_ShooterTwo).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     // shooterOut.onFalse(new ShooterOutStop(s_S hooterOne, s_ShooterTwo));
-    copilotStick.leftBumper().whileTrue(new ShooterOutSlow(s_ShooterOne, -.65, s_ShooterTwo, -.65));
+    copilotStick.x().whileTrue(new ShooterOutSlow(s_ShooterOne, -.65, s_ShooterTwo, -.65));
 
     copilotStick.povUp().whileTrue(new ElevatorRaise(1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     copilotStick.povDown().whileTrue(new ElevatorLower(-1, s_Elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));

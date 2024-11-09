@@ -17,10 +17,10 @@ public class ShooterOutAuto extends ParallelCommandGroup {
 
         addCommands(
             // new ShooterClose(s_ShooterJaws),
-            new Shooter1Out(-1, s_ShooterOne).withTimeout(2),
-            new Shooter2Out(-1, s_ShooterTwo).withTimeout(2),
+            new Shooter1Out(-.80, s_ShooterOne).withTimeout(2),
+            new Shooter2Out(-.75, s_ShooterTwo).withTimeout(2),
             new WaitCommand(1),
-            new TriggerOut(1, s_ShooterTrigger).withTimeout(2)
+            new TriggerOut(.5, s_ShooterTrigger).withTimeout(2)
         );
     }
 }

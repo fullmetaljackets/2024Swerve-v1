@@ -6,15 +6,22 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+// import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
+// import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
+// import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
+// import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveDrivetrain;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveDrivetrainConstants;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModuleConstants;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+// import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+// import com.pathplanner.lib.util.PIDConstants;
+// import com.pathplanner.lib.util.ReplanningConfig;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -28,15 +35,15 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.generated.TunerConstants;
 
 /**
- * Class that extends the Phoenix SwerveDrivetrain class and implements subsystem
+ * Class that extends the Phoenix LegacySwerveDrivetrain class and implements subsystem
  * so it can be used in command-based projects easily.
  */
-public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsystem {
+public class CommandSwerveDrivetrain extends LegacySwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
 
-    private final SwerveRequest.ApplyChassisSpeeds AutoRequest = new SwerveRequest.ApplyChassisSpeeds();
+    private final LegacySwerveRequest.ApplyChassisSpeeds AutoRequest = new LegacySwerveRequest.ApplyChassisSpeeds();
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private final Rotation2d BlueAlliancePerspectiveRotation = Rotation2d.fromDegrees(0);
@@ -45,9 +52,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     /* Keep track if we've ever applied the operator perspective before or not */
     private boolean hasAppliedOperatorPerspective = false;
 
-    private final SwerveRequest.SysIdSwerveTranslation TranslationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
-    private final SwerveRequest.SysIdSwerveRotation RotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
-    private final SwerveRequest.SysIdSwerveSteerGains SteerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
+    private final LegacySwerveRequest.SysIdSwerveTranslation TranslationCharacterization = new LegacySwerveRequest.SysIdSwerveTranslation();
+    private final LegacySwerveRequest.SysIdSwerveRotation RotationCharacterization = new LegacySwerveRequest.SysIdSwerveRotation();
+    private final LegacySwerveRequest.SysIdSwerveSteerGains SteerCharacterization = new LegacySwerveRequest.SysIdSwerveSteerGains();
 
     /* Use one of these sysidroutines for your particular test */
     private SysIdRoutine SysIdRoutineTranslation = new SysIdRoutine(
@@ -86,14 +93,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private final SysIdRoutine RoutineToApply = SysIdRoutineTranslation;
 
 
-    public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, SwerveModuleConstants... modules) {
+    public CommandSwerveDrivetrain(LegacySwerveDrivetrainConstants driveTrainConstants, double OdometryUpdateFrequency, LegacySwerveModuleConstants... modules) {
         super(driveTrainConstants, OdometryUpdateFrequency, modules);
         configurePathPlanner();
         if (Utils.isSimulation()) {
             startSimThread();
         }
     }
-    public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
+    public CommandSwerveDrivetrain(LegacySwerveDrivetrainConstants driveTrainConstants, LegacySwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
         configurePathPlanner();
         if (Utils.isSimulation()) {
@@ -107,22 +114,44 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             driveBaseRadius = Math.max(driveBaseRadius, moduleLocation.getNorm());
         }
 
-        AutoBuilder.configureHolonomic(
+        // Load the RobotConfig from the GUI settings. You should probably
+        // store this in your Constants file
+        RobotConfig config;
+        try{
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            // Handle exception as needed
+            e.printStackTrace();
+            return;
+        }
+
+        AutoBuilder.configure(
             ()->this.getState().Pose, // Supplier of current robot pose
             this::seedFieldRelative,  // Consumer for seeding pose against auto
             this::getCurrentRobotChassisSpeeds,
-            (speeds)->this.setControl(AutoRequest.withSpeeds(speeds)), // Consumer of ChassisSpeeds to drive the robot
-            new HolonomicPathFollowerConfig(new PIDConstants(2.7, 0, 0.01),
-                                            new PIDConstants(6.5, 0, 0.11),
-                                            TunerConstants.kSpeedAt12VoltsMps,
-                                            driveBaseRadius,
-                                            new ReplanningConfig()),
-            () -> DriverStation.getAlliance().orElse(Alliance.Blue)==Alliance.Red, // Assume the path needs to be flipped for Red vs Blue, this is normally the case
-            this); // Subsystem for requirements
+            (speeds, feedforwards) -> this.setControl(AutoRequest.withSpeeds(speeds)), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            config, // The robot configuration
+            () -> {
+            // Boolean supplier that controls when the path will be mirrored for the red alliance
+            // This will flip the path being followed to the red side of the field.
+            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+            },
+            this // Reference to this subsystem to set requirements
+        );
     }
 
 
-    public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
+    public Command applyRequest(Supplier<LegacySwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
     }
 

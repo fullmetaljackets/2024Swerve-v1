@@ -53,8 +53,8 @@ public class ShooterTrigger extends SubsystemBase{
             // System.out.println("Pos: " + TriggerMotor.getPosition());
             // System.out.println("Vel: " + TriggerMotor.getVelocity());
             // System.out.println();
-            SmartDashboard.putNumber("position", TriggerMotor.getPosition().getValue());
-            SmartDashboard.putNumber("Velocity", TriggerMotor.getVelocity().getValue());
+            SmartDashboard.putNumber("position", TriggerMotor.getPosition().getValue().baseUnitMagnitude());
+            SmartDashboard.putNumber("Velocity", TriggerMotor.getVelocity().getValue().baseUnitMagnitude());
 
           }
         //   m_mechanisms.update(TriggerMotor.getPosition(), TriggerMotor.getVelocity());
